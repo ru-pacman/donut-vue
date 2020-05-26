@@ -111,5 +111,7 @@ svg {
   margin: 0 !important;
   padding: 8px 12px;
   box-sizing: border-box;
+  font-size: 12px;
+  line-height: 14px;
 }
 </style>

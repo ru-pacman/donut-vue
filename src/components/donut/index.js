@@ -131,8 +131,10 @@ export default {
               content={`${currentPercent}  ${placement.horizontal}-${placement.vertical}`}
             >
               <div slot="reference" />
+              <div>
+                <strong>{slice.percent * 100}%</strong>
+              </div>
               <div>{slice.text}</div>
-              <div>{slice.percent * 100}%</div>
             </ElPopover>
           );
         })}
