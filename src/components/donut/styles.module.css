@@ -6,10 +6,9 @@
 
 .point {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  outline-offset: 2px;
-  outline: 2px solid red;
+  width: 0;
+  height: 0;
+  opacity: 0;
 }
 
 .svg {

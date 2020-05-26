@@ -1,3 +1,5 @@
+import { Popover as ElPopover } from "element-ui";
+import "element-ui/lib/theme-chalk/popover.css";
 import styles from "./styles.module.css";
 
 const COLORS = [
@@ -53,6 +55,9 @@ function getCoordinatesForPercent(percent) {
 
 export default {
   name: "Donut",
+  components: {
+    ElPopover
+  },
   props: {
     slices: {
       type: Array,
@@ -107,14 +112,28 @@ export default {
         }}
       >
         {this.slices.map(slice => {
+          const currentPercent = cumulativePercentAlt + slice.percent / 2;
+          const placement = {
+            horizontal: (currentPercent + 0.25) % 1 > 0.5 ? "left" : "right",
+            vertical:
+              currentPercent % 1 > 0.5 || currentPercent < 0 ? "end" : "start"
+          };
           cumulativePercentAlt += slice.percent;
           return (
-            <div
+            <ElPopover
               class={styles.point}
-              style={this.getTooltipCoordinates(
-                cumulativePercentAlt - slice.percent / 2
-              )}
-            />
+              style={this.getTooltipCoordinates(currentPercent)}
+              placement={`${placement.horizontal}-${placement.vertical}`}
+              visible-arrow={false}
+              popper-class="donut-popper"
+              trigger="manual"
+              value={slice.id === this.currentSlice}
+              content={`${currentPercent}  ${placement.horizontal}-${placement.vertical}`}
+            >
+              <div slot="reference" />
+              <div>{slice.text}</div>
+              <div>{slice.percent * 100}%</div>
+            </ElPopover>
           );
         })}
         <svg
@@ -172,7 +191,8 @@ export default {
                         x={textX * size.textRadius}
                         y={textY * size.textRadius + 8}
                         text-anchor={
-                          (cumulativePercent - slice.percent / 2 + 0.25) % 1 > 0.5
+                          (cumulativePercent - slice.percent / 2 + 0.25) % 1 >
+                          0.5
                             ? "end"
                             : "start"
                         }

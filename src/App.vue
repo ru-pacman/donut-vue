@@ -36,7 +36,7 @@ export default {
       { id: 11, text: "79200101623", percent: 0.01 },
       { id: 12, text: "79200101623", percent: 0.01 }
     ],
-    currentSlice: 10,
+    currentSlice: undefined,
     funnyColors: [
       "#67B6F4",
       "#ce67f4",
@@ -89,9 +89,11 @@ export default {
 </script>
 
 <style>
-#app {
+body {
   font-family: Helvetica, Arial, sans-serif;
   color: #333;
+}
+#app {
   margin: 60px auto;
   width: 100%;
   max-width: 600px;
@@ -103,5 +105,11 @@ label {
 }
 svg {
   outline: 1px dashed #8000ff;
+}
+.donut-popper {
+  min-width: 96px;
+  margin: 0 !important;
+  padding: 8px 12px;
+  box-sizing: border-box;
 }
 </style>
