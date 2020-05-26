@@ -1,0 +1,30 @@
+.svgSlice {
+  stroke: white;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  cursor: pointer;
+}
+
+.svgText {
+  fill: #656565;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 11px;
+}
+
+.svgTextAll {
+  fill: #656565;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+}
+
+.svgTextPercent {
+  fill: white;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.node {
+  position: relative;
+}
