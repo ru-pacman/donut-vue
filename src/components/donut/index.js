@@ -208,7 +208,7 @@ export default {
                       class={styles.svgTextPercent}
                       vOn:click={() => this.$emit("click", slice.id)}
                     >
-                      {slice.percent * 100}%
+                      {Math.round(slice.percent * 10000) / 100}%
                     </text>
                   </g>
                 )}
