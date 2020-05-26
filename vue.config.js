@@ -1,5 +1,6 @@
 module.exports = {
   publicPath: "./",
   outputDir: "docs",
-  filenameHashing: false
+  filenameHashing: false,
+  lintOnSave: true
 };

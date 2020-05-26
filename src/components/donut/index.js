@@ -73,94 +73,130 @@ export default {
     visible: true
   },
   methods: {
+    getTooltipCoordinates(percent) {
+      const [x, y] = getCoordinatesForPercent(percent);
+      // eslint-disable-next-line no-unused-vars
+      const { width, height } = this.sizes.viewBox;
+      const radius = this.sizes.hover.textRadius;
+
+      let top = 0;
+      let left = 0;
+
+      left = ((width / 2 + x * radius) / width) * 100;
+      top = ((height / 2 + y * radius) / height) * 100;
+
+      return {
+        top: `${top}%`,
+        left: `${left}%`
+      };
+    },
     sliceClick(id) {
       this.$emit("click", id);
     }
   },
   render() {
     let cumulativePercent = -0.25; // Чтобы части начинали свое расположения на 12 часов;
+    let cumulativePercentAlt = cumulativePercent;
 
     return (
-      <svg
-        viewBox={`-${this.sizes.viewBox.width / 2} -${this.sizes.viewBox
-          .height / 2} ${this.sizes.viewBox.width} ${
-          this.sizes.viewBox.height
-        }`}
+      <div
+        class={styles.container}
         style={{
-          width: "100%",
-          height: "100%",
           maxWidth: this.sizes.viewBox.width,
           maxHeight: this.sizes.viewBox.height
         }}
       >
-        <text x="0" y="0" text-anchor="middle" class={styles.svgTextAll}>
-          Всего (шт.):
-        </text>
-        <text x="0" y="14" text-anchor="middle" class={styles.svgTextAll}>
-          546864
-        </text>
-
-        {this.slices.map((slice, key) => {
-          const [startX, startY] = getCoordinatesForPercent(cumulativePercent);
-          const [textX, textY] = getCoordinatesForPercent(
-            cumulativePercent + slice.percent / 2
-          );
-          cumulativePercent += slice.percent;
-          const [endX, endY] = getCoordinatesForPercent(cumulativePercent);
-          const largeArc = slice.percent > 0.5 ? 1 : 0;
-          const size = this.sizes[
-            slice.id === this.currentSlice ? "hover" : "normal"
-          ];
-
-          const pathData = [
-            `M ${startX * size.bigRadius} ${startY * size.bigRadius}`, // Координаты начальной точки
-            `A ${size.bigRadius} ${size.bigRadius} 0 ${largeArc} 1 ${endX *
-              size.bigRadius} ${endY * size.bigRadius}`, // Кривая
-            `L ${endX * size.smallRadius} ${endY * size.smallRadius}`, // Линия
-            `A ${size.smallRadius} ${
-              size.smallRadius
-            } 0 ${largeArc} 0 ${startX * size.smallRadius} ${startY *
-              size.smallRadius}`, // Кривая
-            "Z" // Закрыть полигон
-          ].join(" ");
+        {this.slices.map(slice => {
+          cumulativePercentAlt += slice.percent;
           return (
-            <g id={slice.id}>
-              <path
-                d={pathData}
-                fill={this.colors[key % this.colors.length]}
-                vector-effect="non-scaling-stroke"
-                class={styles.svgSlice}
-                vOn:click={() => this.sliceClick(slice.id)}
-              />
-              {slice.percent >= 0.05 && (
-                <g>
-                  <text
-                    x={textX * size.textRadius}
-                    y={textY * size.textRadius + 8}
-                    text-anchor={
-                      (cumulativePercent - slice.percent / 2 + 0.25) % 1 > 0.5
-                        ? "end"
-                        : "start"
-                    }
-                    class={styles.svgText}
-                  >
-                    {slice.text}
-                  </text>
-                  <text
-                    x={textX * size.percentLabelRadius}
-                    y={textY * size.percentLabelRadius + 6}
-                    text-anchor="middle"
-                    class={styles.svgTextPercent}
-                    vOn:click={() => this.$emit("click", slice.id)}
-                  >
-                    {slice.percent * 100}%
-                  </text>
-                </g>
+            <div
+              class={styles.point}
+              style={this.getTooltipCoordinates(
+                cumulativePercentAlt - slice.percent / 2
               )}
-            </g>
+            />
           );
         })}
-      </svg>
+        <svg
+          viewBox={`-${this.sizes.viewBox.width / 2} -${this.sizes.viewBox
+            .height / 2} ${this.sizes.viewBox.width} ${
+            this.sizes.viewBox.height
+          }`}
+          class={styles.svg}
+        >
+          <text x="0" y="0" text-anchor="middle" class={styles.svgTextAll}>
+            Всего (шт.):
+          </text>
+          <text x="0" y="14" text-anchor="middle" class={styles.svgTextAll}>
+            546864
+          </text>
+
+          {this.slices.map((slice, key) => {
+            const [startX, startY] = getCoordinatesForPercent(
+              cumulativePercent
+            );
+            const [textX, textY] = getCoordinatesForPercent(
+              cumulativePercent + slice.percent / 2
+            );
+            cumulativePercent += slice.percent;
+            const [endX, endY] = getCoordinatesForPercent(cumulativePercent);
+            const largeArc = slice.percent > 0.5 ? 1 : 0;
+            const size = this.sizes[
+              slice.id === this.currentSlice ? "hover" : "normal"
+            ];
+
+            const pathData = [
+              `M ${startX * size.bigRadius} ${startY * size.bigRadius}`, // Координаты начальной точки
+              `A ${size.bigRadius} ${size.bigRadius} 0 ${largeArc} 1 ${endX *
+                size.bigRadius} ${endY * size.bigRadius}`, // Кривая
+              `L ${endX * size.smallRadius} ${endY * size.smallRadius}`, // Линия
+              `A ${size.smallRadius} ${
+                size.smallRadius
+              } 0 ${largeArc} 0 ${startX * size.smallRadius} ${startY *
+                size.smallRadius}`, // Кривая
+              "Z" // Закрыть полигон
+            ].join(" ");
+            return (
+              <g>
+                <path
+                  d={pathData}
+                  fill={this.colors[key % this.colors.length]}
+                  vector-effect="non-scaling-stroke"
+                  class={styles.svgSlice}
+                  vOn:click={() => this.sliceClick(slice.id)}
+                />
+                {slice.percent >= 0.05 && (
+                  <g>
+                    {slice.id !== this.currentSlice && (
+                      <text
+                        x={textX * size.textRadius}
+                        y={textY * size.textRadius + 8}
+                        text-anchor={
+                          (cumulativePercent - slice.percent / 2 + 0.25) % 1 > 0.5
+                            ? "end"
+                            : "start"
+                        }
+                        class={styles.svgText}
+                      >
+                        {slice.text}
+                      </text>
+                    )}
+                    <text
+                      x={textX * size.percentLabelRadius}
+                      y={textY * size.percentLabelRadius + 6}
+                      text-anchor="middle"
+                      class={styles.svgTextPercent}
+                      vOn:click={() => this.$emit("click", slice.id)}
+                    >
+                      {slice.percent * 100}%
+                    </text>
+                  </g>
+                )}
+              </g>
+            );
+          })}
+        </svg>
+      </div>
     );
   }
 };
