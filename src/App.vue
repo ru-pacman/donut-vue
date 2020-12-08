@@ -19,22 +19,22 @@ import Donut from "./components/donut/";
 export default {
   name: "App",
   components: {
-    Donut
+    Donut,
   },
   data: () => ({
     slices: [
-      { id: 1, text: "79200101623", percent: 0.37 },
-      { id: 2, text: "79200101623", percent: 0.16 },
-      { id: 3, text: "79200101623", percent: 0.12 },
-      { id: 4, text: "79200101623", percent: 0.11 },
-      { id: 5, text: "79200101623", percent: 0.1 },
-      { id: 6, text: "79200101623", percent: 0.05 },
-      { id: 7, text: "79200101623", percent: 0.03 },
-      { id: 8, text: "79200101623", percent: 0.02 },
-      { id: 9, text: "79200101623", percent: 0.01 },
-      { id: 10, text: "79200101623", percent: 0.01 },
-      { id: 11, text: "79200101623", percent: 0.01 },
-      { id: 12, text: "79200101623", percent: 0.01 }
+      { id: 1, text: "Some text 1", percent: 0.37 },
+      { id: 2, text: "Some text 2", percent: 0.16 },
+      { id: 3, text: "Some text 3", percent: 0.12 },
+      { id: 4, text: "Some text 4", percent: 0.11 },
+      { id: 5, text: "Some text 5", percent: 0.1 },
+      { id: 6, text: "Some text 6", percent: 0.05 },
+      { id: 7, text: "Some text 7", percent: 0.03 },
+      { id: 8, text: "Some text 8", percent: 0.02 },
+      { id: 9, text: "Some text 9", percent: 0.01 },
+      { id: 10, text: "Some text 10", percent: 0.01 },
+      { id: 11, text: "Some text 11", percent: 0.01 },
+      { id: 12, text: "Some text 12", percent: 0.01 },
     ],
     currentSlice: undefined,
     funnyColors: [
@@ -50,7 +50,7 @@ export default {
       "#c39a52",
       "#b2c352",
       "#52c358",
-      "#52c3b6"
+      "#52c3b6",
     ],
     boringColors: [
       "#67B6F4",
@@ -76,15 +76,15 @@ export default {
       "#335A79",
       "#337079",
       "#4E437B",
-      "#3E447E"
+      "#3E447E",
     ],
-    isFunnyColor: true
+    isFunnyColor: true,
   }),
   computed: {
     colors() {
       return this.isFunnyColor ? this.funnyColors : this.boringColors;
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -26,25 +26,25 @@ const COLORS = [
   "#335A79",
   "#337079",
   "#4E437B",
-  "#3E447E"
+  "#3E447E",
 ];
 const SIZES = {
   viewBox: {
     width: 600,
-    height: 400
+    height: 400,
   },
   normal: {
     bigRadius: 148,
     smallRadius: 72,
     textRadius: 168,
-    percentLabelRadius: 110
+    percentLabelRadius: 110,
   },
   hover: {
     bigRadius: 158,
     smallRadius: 72,
     textRadius: 168,
-    percentLabelRadius: 110
-  }
+    percentLabelRadius: 110,
+  },
 };
 
 function getCoordinatesForPercent(percent) {
@@ -56,26 +56,26 @@ function getCoordinatesForPercent(percent) {
 export default {
   name: "Donut",
   components: {
-    ElPopover
+    ElPopover,
   },
   props: {
     slices: {
       type: Array,
       required: true,
-      default: () => []
+      default: () => [],
     },
     colors: {
       type: Array,
       required: false,
-      default: () => COLORS
+      default: () => COLORS,
     },
     sizes: {
       type: Object,
       required: false,
-      default: () => SIZES
+      default: () => SIZES,
     },
     currentSlice: {},
-    visible: true
+    visible: true,
   },
   methods: {
     getTooltipCoordinates(percent) {
@@ -92,12 +92,12 @@ export default {
 
       return {
         top: `${top}%`,
-        left: `${left}%`
+        left: `${left}%`,
       };
     },
     sliceClick(id) {
       this.$emit("click", id);
-    }
+    },
   },
   render() {
     let cumulativePercent = -0.25; // Чтобы части начинали свое расположения на 12 часов;
@@ -108,15 +108,15 @@ export default {
         class={styles.container}
         style={{
           maxWidth: this.sizes.viewBox.width,
-          maxHeight: this.sizes.viewBox.height
+          maxHeight: this.sizes.viewBox.height,
         }}
       >
-        {this.slices.map(slice => {
+        {this.slices.map((slice) => {
           const currentPercent = cumulativePercentAlt + slice.percent / 2;
           const placement = {
             horizontal: (currentPercent + 0.25) % 1 > 0.5 ? "left" : "right",
             vertical:
-              currentPercent % 1 > 0.5 || currentPercent < 0 ? "end" : "start"
+              currentPercent % 1 > 0.5 || currentPercent < 0 ? "end" : "start",
           };
           cumulativePercentAlt += slice.percent;
           return (
@@ -139,10 +139,9 @@ export default {
           );
         })}
         <svg
-          viewBox={`-${this.sizes.viewBox.width / 2} -${this.sizes.viewBox
-            .height / 2} ${this.sizes.viewBox.width} ${
-            this.sizes.viewBox.height
-          }`}
+          viewBox={`-${this.sizes.viewBox.width / 2} -${
+            this.sizes.viewBox.height / 2
+          } ${this.sizes.viewBox.width} ${this.sizes.viewBox.height}`}
           class={styles.svg}
         >
           <text x="0" y="0" text-anchor="middle" class={styles.svgTextAll}>
@@ -168,14 +167,14 @@ export default {
 
             const pathData = [
               `M ${startX * size.bigRadius} ${startY * size.bigRadius}`, // Координаты начальной точки
-              `A ${size.bigRadius} ${size.bigRadius} 0 ${largeArc} 1 ${endX *
-                size.bigRadius} ${endY * size.bigRadius}`, // Кривая
+              `A ${size.bigRadius} ${size.bigRadius} 0 ${largeArc} 1 ${
+                endX * size.bigRadius
+              } ${endY * size.bigRadius}`, // Кривая
               `L ${endX * size.smallRadius} ${endY * size.smallRadius}`, // Линия
-              `A ${size.smallRadius} ${
-                size.smallRadius
-              } 0 ${largeArc} 0 ${startX * size.smallRadius} ${startY *
-                size.smallRadius}`, // Кривая
-              "Z" // Закрыть полигон
+              `A ${size.smallRadius} ${size.smallRadius} 0 ${largeArc} 0 ${
+                startX * size.smallRadius
+              } ${startY * size.smallRadius}`, // Кривая
+              "Z", // Закрыть полигон
             ].join(" ");
             return (
               <g>
@@ -220,5 +219,5 @@ export default {
         </svg>
       </div>
     );
-  }
+  },
 };
