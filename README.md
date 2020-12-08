@@ -1,5 +1,7 @@
 # donut-vue
 
+[Example](https://ru-pacman.github.io/donut-vue/)
+
 ## Project setup
 ```
 npm install
